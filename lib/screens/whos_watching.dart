@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:netflix_ui_clone/dummy_data.dart';
+import 'package:netflix_ui_clone/screens/home_screen.dart';
+import 'package:netflix_ui_clone/widgets/whos_watching_card.dart';
+import 'package:netflix_ui_clone/widgets/whos_watching_pin_modal.dart';
 
 class WhosWatching extends StatelessWidget {
   const WhosWatching({Key? key}) : super(key: key);
@@ -48,32 +51,23 @@ class WhosWatching extends StatelessWidget {
                       mainAxisSpacing: 20,
                     ),
                     itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          SizedBox(
-                            height: 90,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.asset(watchingData[index].image),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            watchingData[index].name,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          watchingData[index].isLocked
-                              ? (const Icon(Icons.lock_outline, size: 13))
-                              : const SizedBox()
-                        ],
+                      return GestureDetector(
+                        onTap: () {
+                          if (watchingData[index].pin != null) {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return WhosWatchingPinModal(
+                                    pin: watchingData[index].pin!);
+                              },
+                            );
+                          } else {
+                          
+                          }
+                        },
+                        child: WhosWatchingCard(
+                          index: index,
+                        ),
                       );
                     },
                   )
